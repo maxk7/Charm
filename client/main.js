@@ -25,16 +25,16 @@ const createWindow = () => {
         width: 800,
         height: 485,
         webPreferences: {
-            renderer: path.join(__dirname, 'renderer.js'),
+            renderer: path.join(__dirname, 'client/renderer.js'),
         },
     });
 
-    win.loadFile('index.html');
+    win.loadFile('client/index.html');
 
 };
 
 app.whenReady().then(() => {
-    spawn("python", ["./flask_server/main.py"])
+    spawn("python", ["./flask_server/server/main.py"])
     createWindow();
 
     app.on('activate', () => {

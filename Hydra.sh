@@ -4,7 +4,7 @@ directory=$(pwd)
 
 osascript <<EOF
 tell application "Terminal"
-    do script "cd $directory && flask --app main.py run"
+    do script "cd $directory && flask --app server/main.py run"
 end tell
 EOF
 
@@ -20,4 +20,4 @@ EOF
 # Run the Python script after a short delay to allow the previous commands to start
 #
 
-python guitest.py
+python gui/guitest.py
