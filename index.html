@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+		<!--
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self';
+		script-src 'self' https://cdn.socket.io https://unpkg.com/hydra-synth https://hyper-hydra.glitch.me 'unsafe-inline' 'unsafe-eval';
+		connect-src 'self' http://127.0.0.1:5000 ws://127.0.0.1:5000">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'" />
+		-->
+    <title>Hydra Visualizer</title>
+</head>
+
+<body>
+		<script src="https://unpkg.com/hydra-synth"></script>
+		<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+		<script src="renderer.js"></script>
+
+		<script>
+			// create a new hydra-synth instance
+      var hydra = new Hydra({ detectAudio: true })
+			
+			// audio setup
+			a.show()
+			a.setBins(8)
+			a.setCutoff(3)
+			a.setSmooth(0.35)
+
+			//visual setup
+      osc(4, 0.1, 1.2)
+				.kaleid(99)
+				.mask(shape(99, ()=>0.3+a.fft[0]/3))
+				.out()
+		</script>
+</body>
+
+</html>

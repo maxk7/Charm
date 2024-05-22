@@ -1,0 +1,28 @@
+Screen {
+	align: center middle;
+}
+
+Sparkline {
+	height: 35%;
+	margin: 2;
+}
+
+TextAreaConsoleLog {
+  height: 55%;
+	width: 20%;
+	color: $text;
+	background: $panel;
+	border: $secondary double;
+	align-vertical: bottom;
+	dock: right;
+}
+
+ExtendedTextArea {
+  height: 55%;
+	width: 80%;
+	color: $text;
+	background: $panel;
+	border: $secondary double;
+	content-align: left bottom;
+	dock: bottom;
+}
