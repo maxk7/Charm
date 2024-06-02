@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>chrm vx</title>
+</head>
+<body>
+		<script src="https://unpkg.com/hydra-synth"></script>
+		<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+		<script src="renderer.js"></script>
+		<script>
+			// create a new hydra-synth instance
+      var hydra = new Hydra({ detectAudio: true })
+			
+			// audio setup
+			a.show()
+			a.setBins(8)
+			a.setCutoff(3)
+			a.setSmooth(0.35)
+
+			// visual setup
+      osc(4, 0.1, 1.2)
+				.kaleid(4)
+				.mask(shape(4, ()=>0.3+a.fft[0]/3))
+				.out()
+		</script>
+</body>
+</html>
