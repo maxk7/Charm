@@ -1,0 +1,21 @@
+{
+  "name": "flask-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client/visualizer/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^30.0.2",
+    "express": "^4.19.2",
+    "http": "^0.0.1-security",
+    "hydra-synth": "^1.3.29",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
+  }
+}

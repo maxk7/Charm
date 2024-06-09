@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 
 const createWindow = () => {
     // Start the backend server
-    const python = spawn('python', [path.join(__dirname, '/../server', 'main.py')]);
+    const python = spawn('python', [path.join(__dirname, '/../../server', 'main.py')]);
 
     python.on('close', (code) => {
         console.log(`child process exited with code ${code}`);

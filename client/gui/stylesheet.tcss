@@ -1,7 +1,7 @@
 Screen {
 	layout: grid;
 	grid-size: 2;
-	grid-columns: 4fr 1fr;
+	grid-columns: 4fr 1.2fr;
 	grid-rows: 1 1fr 4fr;
 	background: $background;
 }
@@ -31,7 +31,7 @@ RichLog {
 	border: $success-lighten-2 double;
 }
 
-ExtendedTextArea {
+TextArea {
 	color: $success;
 	background: $background;
 	border: $success-lighten-2 double;

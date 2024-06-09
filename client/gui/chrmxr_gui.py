@@ -1,16 +1,19 @@
-from textual import events
 from textual.app import App, ComposeResult
-from textual.widgets import TextArea, RichLog, DataTable, Label, Static
+from textual.widgets import TextArea, RichLog, Label
+from textual.binding import Binding
 from rich.table import Table
 from rich.text import Text
 import requests
 import socketio
 import json
 
+from HydraExtensionModule import HydraExtensionModule
+from HydraDashboard import HydraDashboard
+from ToggleDashboard import ToggleDashboard
+
 cmdNumber = 0                   # command id number
 sio = socketio.Client()         # socketio for viz data
 url = 'http://127.0.0.1:5000'   # url for code post
-
 
 # Handles incoming audio data from websocket
 @sio.on('audio-feed-reply')
@@ -32,7 +35,18 @@ def get_audio():
 def send_code(content, log):
     global cmdNumber
     cmdNumber += 1
+
+    try:
+        modules = app.query_one(ToggleDashboard)
+        JSExtensionStatus = modules.getTestMethod()
+
+        if JSExtensionStatus == modules.symbEnabled:
+            content = HydraExtensionModule(content)
     
+    except:
+        pass # default to no parse
+
+
     json_data = json.dumps({'code': content})
     response = requests.post(url+'/run-js', headers={'Content-Type': 'application/json'}, data=json_data)
 
@@ -58,126 +72,79 @@ def send_code(content, log):
     return response
 
 
-# CODE EDITOR
-''' Keybinds
-grave  update   code
-opt+1  decrease cutoff
-opt+2  increase cutoff
-opt+3  decrease smooth
-opt+4  increase smooth
-'''
-class ExtendedTextArea(TextArea):
-    def on_key(self, event: events.Key) -> None:
-        log = app.query_one(RichLog)
-
-        # keybind to post code to server
-        if event.character == "`":
-            response = send_code(self.text, log)
-            event.prevent_default()
-
-        # test keybind to retreive audio data
-        if event.character == "~":
-            log.write(get_audio())
-            event.prevent_default()
-
-        # additional logic to handle settings posts
-        else:
-            table = app.query_one(HydraDashboard)
-
-            # decrease cutoff
-            if event.character == "¡":
-                newCutoff = table.getCutoff() - 0.1
-                response = send_code(f"a.setCutoff({newCutoff})", log)
-
-                if "200" in str(response):
-                    table.setCutoff(newCutoff)
-                    table.refreshDash() 
-
-                event.prevent_default()
-
-            # increase cutoff 
-            elif event.character == "™":
-                newCutoff = table.getCutoff() + 0.1
-                response = send_code(f"a.setCutoff({newCutoff})", log)
-
-                if "200" in str(response):
-                    table.setCutoff(newCutoff)
-                    table.refreshDash() 
-
-                event.prevent_default()
-
-            # decrease smooth
-            elif event.character == "£":
-                newSmooth = table.getSmooth() - 0.05
-                response = send_code(f"a.setSmooth({newSmooth})", log)
-
-                if "200" in str(response):
-                    table.setSmooth(newSmooth)
-                    table.refreshDash() 
-
-                event.prevent_default()
-
-            # increase smooth
-            elif event.character == "¢":
-                newSmooth = table.getSmooth() + 0.05
-                response = send_code(f"a.setSmooth({newSmooth})", log)
-
-                if "200" in str(response):
-                    table.setSmooth(newSmooth)
-                    table.refreshDash() 
-
-                event.prevent_default()
-
-
-# Dashboard widget for displaying vizualizer settings
-class HydraDashboard(DataTable):
-    ROWS = [
-        ["SETTINGS MODULE", "VALUE"],
-        ["---------------", "-----"],
-        ["setCutoff", 3.00],
-        ["setSmooth", 0.35]
-    ]
-
-    # Helper function to update the table widget
-    def refreshDash(self):
-        self.clear()
-        self.add_rows(self.ROWS)
-
-    # Getters
-    def getCutoff(self):
-        return self.ROWS[2][1]
-
-
-    def getSmooth(self):
-        return self.ROWS[3][1]
-
-
-    # Setters
-    def setCutoff(self, value):
-        self.ROWS[2][1] = value
-
-
-    def setSmooth(self, value):
-        self.ROWS[3][1] = value
-
-
 # APPLICATION
 class charm(App):
     CSS_PATH = "stylesheet.tcss"
-    heading = Text().assemble("charm xr   ", ("-   max konzerowsky", "dim"))
+    spacing = 4 # adjust header spacing to preferences
+    heading = Text().assemble("⊹ chrm xr ⊹"+" "*spacing, ("-"+" "*spacing+"max konzerowsky", "dim"))
+
+    BINDINGS = [
+        Binding("`", "sendCode", "", priority=True),
+        Binding("¡", "increaseCutoff(0.1)", "", priority=True),
+        Binding("™", "increaseCutoff(-0.1)", "", priority=True),
+        Binding("£", "increaseSmooth(0.05)", "", priority=True),
+        Binding("¢", "increaseSmooth(-0.05)", "", priority=True),
+        Binding("≠", "toggleHydra3xtend()", "", priority=True),
+    ]
 
     def compose(self) -> ComposeResult:
         yield Label(self.heading)
         yield HydraDashboard(show_header=False, show_cursor=False)
-        yield Static()
-        yield ExtendedTextArea.code_editor(theme='css')
+        yield ToggleDashboard(show_header=False, show_cursor=False)
+        yield TextArea.code_editor(theme='css')
         yield RichLog(markup=True)
         
 
     def on_mount(self) -> None:
+        # initialize both tables without a header row
+        HydraDash = self.query_one(HydraDashboard)
+        HydraDash.add_columns("", "")
+        HydraDash.refreshDash()
+        
+        ToggleDash = self.query_one(ToggleDashboard)
+        ToggleDash.add_columns("", "")
+        ToggleDash.refreshDash()
+
+
+    def action_sendCode(self) -> None:
+        # keybind to post code to server
+        log = self.query_one(RichLog)
+        text = self.query_one(TextArea).text
+        send_code(text, log)
+
+    def action_getAudio(self) -> None:
+        log = self.query_one(RichLog)
+        log.write(get_audio())
+
+    def action_increaseCutoff(self, amount) -> None:
         table = self.query_one(HydraDashboard)
-        table.add_columns("", "")
-        table.refreshDash()
+        newCutoff = table.getCutoff() - amount
+        response = send_code(f"a.setCutoff({newCutoff})", self.query_one(RichLog))
+
+        if "200" in str(response):
+            table.setCutoff(newCutoff)
+            table.refreshDash() 
+
+    def action_increaseSmooth(self, amount) -> None:
+        table = self.query_one(HydraDashboard)
+        newSmooth = table.getSmooth() - amount
+        response = send_code(f"a.setSmooth({newSmooth})", self.query_one(RichLog))
+
+        if "200" in str(response):
+            table.setSmooth(newSmooth)
+            table.refreshDash() 
+
+    def action_toggleHydra3xtend(self) -> None:
+        modules = self.query_one(ToggleDashboard)
+        moduleStatus = modules.getTestMethod()
+
+        # toggle status
+        if moduleStatus == modules.symbEnabled:
+            modules.setTestMethod(modules.symbDisabled)
+        else:
+            modules.setTestMethod(modules.symbEnabled)
+
+        modules.refreshDash()
 
 
 if __name__ == "__main__":
