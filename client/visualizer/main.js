@@ -1,8 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
+const { checkForUpdates } = require('./update-scripts');
 
-const createWindow = () => {
+async function createWindow () {
     // Start the backend server
     const python = spawn('python', [path.join(__dirname, '/../../server', 'main.py')]);
 
@@ -20,6 +21,8 @@ const createWindow = () => {
             contextIsolation: false
         },
     });
+
+		await checkForUpdates(); // Check for updates before creating the window
 
     win.loadFile(path.join(__dirname, 'index.html'));
 };

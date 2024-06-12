@@ -4,9 +4,9 @@ class ToggleDashboard(DataTable):
     symbEnabled, symbDisabled = "▣", "☐"
 
     ROWS = [
-        ["MODULES", ""],
-        ["-------", ""],
-        ["Hydra3xtend", symbEnabled],
+        ["EXTENSIONS", ""],
+        ["----------", ""],
+        ["Hdra3xtend", symbEnabled],
     ]
 
     # Helper function to update the table widget

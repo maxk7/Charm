@@ -10,11 +10,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")  # Allow CORS for Socket.IO
 def post_data():
     data = request.get_json()
     code = data.get('code')
+
     if code:
         socketio.emit('run-js', code)
-        return jsonify({"response": "posted"}), 200
+        return jsonify({"response": "posted (200)"}), 200
     else:
-        return jsonify({"error": "code not found"}), 400
+        return jsonify({"error": "parse err (400)"}), 400
 
 # Audio relay: gui -> viz
 @socketio.on('audio-feed')

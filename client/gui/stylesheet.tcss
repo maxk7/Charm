@@ -1,8 +1,8 @@
 Screen {
 	layout: grid;
 	grid-size: 2;
-	grid-columns: 4fr 1.2fr;
-	grid-rows: 1 1fr 4fr;
+	grid-columns: 3fr 17;
+	grid-rows: 1 6 4fr 7;
 	background: $background;
 }
 
@@ -12,13 +12,7 @@ Label {
 	content-align: center middle;
 }
 
-Rule {
-	width: 100%;
-	column-span: 2;
-	color: $success;
-}
-
-DataTable {
+HydraDashboard {
 	height: 100%;
 	column-span: 1;
 	color: $success;
@@ -26,13 +20,27 @@ DataTable {
 	background: $background;
 }
 
-RichLog {
+
+ToggleDashboard {
+	height: 100%;
+	column-span: 1;
+	color: $success;
+	border: $success-lighten-2;
+	background: $background;
+}
+
+TextArea {
+	column-span: 1;
+	row-span: 2;
+	color: $success;
 	background: $background;
 	border: $success-lighten-2 double;
 }
 
-TextArea {
-	color: $success;
+ConnectionLog {
+	height: 7;
+	column-span: 1;
+	row-span: 1;
 	background: $background;
 	border: $success-lighten-2 double;
 }
