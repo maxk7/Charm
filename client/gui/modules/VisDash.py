@@ -5,8 +5,8 @@ class HydraDashboard(DataTable):
     ROWS = [
         ["HYDRA SETTINGS", "VALUE"],
         ["--------------", "-----"],
-        ["setCutoff", 3.00],
-        ["setSmooth", 0.35]
+        ["Thresh", 3.00],
+        ["Attack", 0.60]
     ]
 
     # Helper function to update the table widget

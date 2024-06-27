@@ -20,7 +20,6 @@ HydraDashboard {
 	background: $background;
 }
 
-
 ToggleDashboard {
 	height: 100%;
 	column-span: 1;
@@ -32,6 +31,14 @@ ToggleDashboard {
 TextArea {
 	column-span: 1;
 	row-span: 2;
+	color: $success;
+	background: $background;
+	border: $success-lighten-2 double;
+}
+
+Tempo {
+	height: auto;
+	width: 100%;
 	color: $success;
 	background: $background;
 	border: $success-lighten-2 double;

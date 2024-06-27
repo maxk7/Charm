@@ -24,4 +24,9 @@ def HydraExtensionModule(content):
                      r".scale(width/height, height/width).scale(\1)",
                      content)
 
+    # quick import image
+    content = re.sub(r"\.loadimg\(\"(.*)\"\)",
+                     r""".initImage("file:/Users/default/Desktop/ /Hydra/imports/\1")""",
+                     content)
+
     return content

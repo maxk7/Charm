@@ -12,17 +12,17 @@
 			// create a new hydra-synth instance
       var hydra = new Hydra({ detectAudio: true })
 
+			// additional scripts
+			loadScript("https://hyper-hydra.glitch.me/hydra-gif.js")
+
 			// audio setup
 			a.show()
 			a.setBins(8)
-			a.setCutoff(3)
-			a.setSmooth(0.35)
+			a.setCutoff(3.00)
+			a.setSmooth(0.40)
 
 			// visual setup
-      osc(4, 0.1, 1.2)
-				.kaleid(4)
-				.mask(shape(4, ()=>0.3+a.fft[0]/3))
-				.out()
+			solid(0, 0, 0).out() 
 		</script>
 </body>
 </html>

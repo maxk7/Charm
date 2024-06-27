@@ -46,7 +46,7 @@ function checkForUpdates() {
             resolve();
           }
         });
-      }).on('error', reject);
+      }, timeout=5).on('error', reject); 
     });
   }));
 }

@@ -22,7 +22,7 @@ async function createWindow () {
         },
     });
 
-		await checkForUpdates(); // Check for updates before creating the window
+		// await checkForUpdates(); // Check for updates before creating the window
 
     win.loadFile(path.join(__dirname, 'index.html'));
 };
