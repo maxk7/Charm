@@ -38,25 +38,7 @@ import re
 cmdNumber = 0                   # initial command id number
 sio = socketio.Client()         # socketio for viz data
 url = 'http://127.0.0.1:5000'   # url for code post
-
-
-#### Viz Gui Aduio Connection (WIP) ####
-# Handles incoming audio data from websocket
-@sio.on('audio-feed-reply')
-def on_audio_feed(data):
-    log = app.query_one(RichLog)
-    log.write(data)
-
-
-# Request audio data via websocket
-def get_audio():
-    try:
-        response = sio.emit('audio-feed')
-        return response
-    except socketio.exceptions.BadNamespaceError:
-        return 400
-
-####  ----------------------------- ####
+saves_dir = '../../saves/'      # directory to save user code
 
 
 # Post Code to Hydra
@@ -213,7 +195,12 @@ class chrm(App):
 
         # Save the match to the variable file_name
         file_name = match.group(1) if match else datetime.now().strftime("%H%M%S %d%m")
-        file_path = os.path.expanduser(f"~/Desktop/Summer/Hydra/saves/{file_name}.txt")
+
+        # Create the saves directory if it doesn't exist
+        if not os.path.exists(saves_dir):
+            os.makedirs(saves_dir)
+
+        file_path = os.path.join(saves_dir, f"{file_name}.txt")
         
         with open(file_path, "w") as file:
             file.write(editor.text)
@@ -223,12 +210,8 @@ class chrm(App):
 #### end of application ####
 
 
+# Code to run user interface
 if __name__ == "__main__":
-    try:
-        sio.connect('http://127.0.0.1:5000')
-    except socketio.exceptions.ConnectionError:
-        print("unable to establish audio pipeline")
-
     app = chrm()
     app.run()
 
