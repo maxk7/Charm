@@ -14,7 +14,7 @@ Charm is an Electron-based application designed to render and interact with Hydr
 - Client
   - Visualizer (Electron)
   - GUI (Python-Textual)
-    - modules
+    - Modules
 
 ## Server
 
